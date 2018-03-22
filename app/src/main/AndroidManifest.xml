@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.UserMainActivity"
             android:screenOrientation="portrait" />
 
         <provider
@@ -38,7 +38,8 @@
         </activity>
         <activity android:name=".ui.LoginSelectActivity" />
         <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.RgActivity"></activity>
+        <activity android:name=".ui.RgActivity" />
+        <activity android:name=".ui.MerchantDetailActivity"></activity>
     </application>
 
 </manifest>

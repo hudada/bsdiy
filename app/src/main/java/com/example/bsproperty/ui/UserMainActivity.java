@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.TextView;
 
 import com.example.bsproperty.MyApplication;
 import com.example.bsproperty.R;
 import com.example.bsproperty.eventbus.LoginEvent;
-import com.example.bsproperty.fragment.Fragment01;
+import com.example.bsproperty.fragment.UserFragment01;
+import com.example.bsproperty.fragment.UserFragment02;
+import com.example.bsproperty.fragment.UserFragment03;
 import com.example.bsproperty.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class UserMainActivity extends BaseActivity {
 
 
     @BindView(R.id.vp_content)
@@ -33,11 +34,13 @@ public class MainActivity extends BaseActivity {
 
 
     private long backTime;
-    private Fragment01 fragment01;
+    private UserFragment01 fragment01;
+    private UserFragment02 fragment02;
+    private UserFragment03 fragment03;
     private ArrayList<Fragment> fragments;
     private MyFragmentPagerAdapter adapter;
     private String[] tabs = new String[]{
-            "账单", "图表", "发现"
+            "商家", "订单", "我的"
     };
 
     @Override
@@ -45,9 +48,13 @@ public class MainActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         MyApplication.getInstance().setUserBean(SpUtils.getUserBean(this));
 
-        fragment01 = new Fragment01();
+        fragment01 = new UserFragment01();
+        fragment02 = new UserFragment02();
+        fragment03 = new UserFragment03();
         fragments = new ArrayList<>();
         fragments.add(fragment01);
+        fragments.add(fragment02);
+        fragments.add(fragment03);
 
 
         adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
@@ -80,7 +87,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int getRootViewId() {
-        return R.layout.activity_main;
+        return R.layout.activity_user_main;
     }
 
     @Override

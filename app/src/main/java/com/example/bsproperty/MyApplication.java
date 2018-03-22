@@ -19,6 +19,11 @@ public class MyApplication extends Application {
     private static MyApplication instance;
     private UserBean userBean;
 
+    public static final int CURR_ADMIN = -1;
+    public static final int CURR_USER = 1;
+    public static final int CURR_MERCHANT = 2;
+
+
     @Override
     public void onCreate() {
         super.onCreate();

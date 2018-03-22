@@ -1,5 +1,6 @@
 package com.example.bsproperty.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,8 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
     private boolean isFooter;
     private boolean isNoMore;
     private TextView tv_load_msg;
+    private int mHeadViewId;
+    private boolean hasHead;
     private View mHeadView;
     private HashMap<Integer, Integer> mLayoutIds;
     private OnInitHead onInitHead;
@@ -54,15 +57,17 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
         mInflater = LayoutInflater.from(mContext);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
-        if (mData.size() == 0 && mHeadView == null) {
+        if (mData.size() == 0 && !hasHead) {
             holder = new BaseViewHolder(mInflater.inflate(R.layout.item_empty, parent, false));
         } else {
             if (viewType == TYPE_ITEM) {
                 holder = new BaseViewHolder(mInflater.inflate(mLayoutId, parent, false));
             } else if (viewType == TYPE_HEAD) {
+                mHeadView = mInflater.inflate(mHeadViewId, parent, false);
                 holder = new BaseViewHolder(mHeadView);
             } else if (viewType == TYPE_FOOTER) {
                 holder = new BaseFooterViewHolder(mInflater.inflate(R.layout.item_footer, parent, false));
@@ -75,13 +80,13 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (mData.size() == 0 && mHeadView == null) {
+        if (mData.size() == 0 && !hasHead) {
 
         } else {
             if (holder instanceof BaseAdapter.BaseFooterViewHolder) {
                 tv_load_msg = ((BaseFooterViewHolder) holder).msg;
             } else if (holder instanceof BaseAdapter.BaseViewHolder) {
-                if (position == 0 && mHeadView != null && onInitHead != null) {
+                if (position == 0 && hasHead && onInitHead != null) {
                     if (mData.size() > 0) {
                         onInitHead.onInitHeadData(mHeadView, mData.get(position));
                     } else {
@@ -92,7 +97,7 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
                         ((BaseViewHolder) holder).rootView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (mHeadView != null) {
+                                if (hasHead) {
                                     onItemClickListener.onItemClick(v, mData.get(position - 1), position - 1);
                                 } else {
                                     onItemClickListener.onItemClick(v, mData.get(position), position);
@@ -100,7 +105,7 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
                             }
                         });
                     }
-                    if (mHeadView != null) {
+                    if (hasHead) {
                         initItemView((BaseViewHolder) holder, mData.get(position - 1), position - 1);
                     } else {
                         initItemView((BaseViewHolder) holder, mData.get(position), position);
@@ -117,18 +122,18 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
         if (mData.size()==0){
             return 1;
         }else{
-            return mData.size() + (isFooter ? 1 : 0) + (mHeadView == null ? 0 : 1);
+            return mData.size() + (isFooter ? 1 : 0) + (hasHead ? 1 : 0);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 && mHeadView != null) {
+        if (position == 0 && hasHead) {
             return TYPE_HEAD;
-        } else if (position > mData.size() + (mHeadView == null ? 0 : 1) - 1) {
+        } else if (position > mData.size() + (hasHead ? 1 : 0) - 1) {
             return TYPE_FOOTER;
         }
-        return getOnlyItemViewType(position - (mHeadView == null ? 0 : 1));
+        return getOnlyItemViewType(position - (hasHead ? 1 : 0));
     }
 
     public int getOnlyItemViewType(int position) {
@@ -175,7 +180,7 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
                     if (!isNoMore) {
-                        if (!isLoading && totalItemCount <= lastVisibleItemPosition + (mHeadView == null ? 0 : 1) + 1) {  //暂时设置滑到最后才触发
+                        if (!isLoading && totalItemCount <= lastVisibleItemPosition + (hasHead ? 1 : 0) + 1) {  //暂时设置滑到最后才触发
                             isLoading = true;
                             if (onLoadMoreListener != null) {
                                 onLoadMoreListener.onLoadMore();
@@ -197,13 +202,10 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
         }
     }
 
-    public View getmHeadView() {
-        return mHeadView;
-    }
-
-    public void setmHeadView(View mHeadView, OnInitHead onInitHead) {
-        this.mHeadView = mHeadView;
+    public void setmHeadView(int mHeadView, OnInitHead onInitHead) {
+        this.mHeadViewId = mHeadView;
         this.onInitHead = onInitHead;
+        hasHead = true;
     }
 
     /**

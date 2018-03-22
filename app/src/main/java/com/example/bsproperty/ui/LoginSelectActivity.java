@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.bsproperty.MyApplication;
 import com.example.bsproperty.R;
 
 import butterknife.BindView;
@@ -22,6 +23,7 @@ public class LoginSelectActivity extends BaseActivity {
     Button btnMerchant;
     @BindView(R.id.btn_admin)
     Button btnAdmin;
+
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -43,13 +45,13 @@ public class LoginSelectActivity extends BaseActivity {
         Intent intent = new Intent(mContext,LoginActivity.class);
         switch (view.getId()) {
             case R.id.btn_user:
-                intent.putExtra("limit",0);
+                intent.putExtra("limit", MyApplication.CURR_USER);
                 break;
             case R.id.btn_merchant:
-                intent.putExtra("limit",1);
+                intent.putExtra("limit",MyApplication.CURR_MERCHANT);
                 break;
             case R.id.btn_admin:
-                intent.putExtra("limit",-1);
+                intent.putExtra("limit",MyApplication.CURR_ADMIN);
                 break;
         }
         startActivity(intent);

@@ -38,7 +38,6 @@ public class RgActivity extends BaseActivity {
     @Override
     protected void loadData() {
         limit = getIntent().getIntExtra("0",0);
-        showToast(limit+"");
     }
 
 

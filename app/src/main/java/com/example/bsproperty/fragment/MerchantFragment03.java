@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bsproperty.MyApplication;
@@ -23,7 +22,7 @@ import butterknife.Unbinder;
  * Created by wdxc1 on 2018/3/21.
  */
 
-public class UserFragment03 extends BaseFragment {
+public class MerchantFragment03 extends BaseFragment {
     @BindView(R.id.btn_back)
     Button btnBack;
     @BindView(R.id.tv_title)
@@ -32,6 +31,8 @@ public class UserFragment03 extends BaseFragment {
     Button btnRight;
     @BindView(R.id.tv_name)
     TextView tvName;
+    @BindView(R.id.tv_shop)
+    TextView tvShop;
     @BindView(R.id.tv_addr)
     TextView tvAddr;
     @BindView(R.id.tv_tel)
@@ -43,6 +44,7 @@ public class UserFragment03 extends BaseFragment {
     public void onResume() {
         super.onResume();
         tvName.setText(MyApplication.getInstance().getUserBean().getUserName());
+        tvShop.setText(MyApplication.getInstance().getUserBean().getName());
         tvAddr.setText(MyApplication.getInstance().getUserBean().getAddr());
         tvTel.setText(MyApplication.getInstance().getUserBean().getTel());
     }
@@ -50,6 +52,7 @@ public class UserFragment03 extends BaseFragment {
     @Override
     protected void loadData() {
         tvName.setText(MyApplication.getInstance().getUserBean().getUserName());
+        tvShop.setText(MyApplication.getInstance().getUserBean().getName());
         tvAddr.setText(MyApplication.getInstance().getUserBean().getAddr());
         tvTel.setText(MyApplication.getInstance().getUserBean().getTel());
     }
@@ -64,8 +67,9 @@ public class UserFragment03 extends BaseFragment {
 
     @Override
     public int getRootViewId() {
-        return R.layout.fragment_user03;
+        return R.layout.fragment_merchant03;
     }
+
 
     @OnClick({R.id.btn_right, R.id.btn_out})
     public void onViewClicked(View view) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:background="@drawable/btn_ripple"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,58 +14,54 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="蛋糕店"
+            android:text="沃尔玛低脂蛋糕x1"
             android:textColor="@color/text_4"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+             />
 
         <TextView
-            android:id="@+id/tv_total"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="月售：521"
+            android:text="2018-5-21 10:10:00"
             android:textColor="@color/text_6"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_msg"
+            android:id="@+id/tv_store"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
-            android:layout_marginTop="5dp"
-            android:text="第一家蛋糕店"
+            android:text="土拨鼠蛋糕店"
             android:textColor="@color/text_6"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_addr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_msg"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/tv_tel"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="地址：蛋糕场店"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_store"
+            android:text="地址：土拨鼠草原广场"
             android:textColor="@color/text_6"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
 
         <TextView
-            android:id="@+id/tv_tel"
+            android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_msg"
-            android:layout_marginTop="5dp"
-            android:text="tel：133333333"
-            android:textColor="@color/text_6"
-            android:textSize="14sp" />
+            android:layout_below="@+id/tv_store"
+            android:text="总价：￥150元"
+            android:textColor="@color/text_4"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/line" />
+        android:background="@color/line"/>
 </LinearLayout>

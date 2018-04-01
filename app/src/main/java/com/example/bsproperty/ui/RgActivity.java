@@ -6,7 +6,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.bsproperty.MyApplication;
 import com.example.bsproperty.R;
+import com.example.bsproperty.bean.UserObjBean;
+import com.example.bsproperty.net.ApiManager;
+import com.example.bsproperty.net.BaseCallBack;
+import com.example.bsproperty.net.OkHttpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +42,7 @@ public class RgActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
-        limit = getIntent().getIntExtra("0",0);
+        limit = getIntent().getIntExtra("0", 0);
     }
 
 
@@ -45,9 +50,29 @@ public class RgActivity extends BaseActivity {
     public void onViewClicked() {
         String user = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
-        if (TextUtils.isEmpty(user) || TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(user) || TextUtils.isEmpty(pwd)) {
             showToast("请输入完整信息");
             return;
         }
+        String url = "";
+        switch (limit) {
+            case MyApplication.CURR_USER:
+                url = ApiManager.USER_RG + MyApplication.CURR_USER;
+                break;
+            case MyApplication.CURR_MERCHANT:
+                url = ApiManager.USER_RG + MyApplication.CURR_MERCHANT;
+                break;
+        }
+        OkHttpTools.sendPost(mContext, url)
+                .addParams("name", user)
+                .addParams("pwd", pwd)
+                .build()
+                .execute(new BaseCallBack<UserObjBean>(mContext, UserObjBean.class) {
+                    @Override
+                    public void onResponse(UserObjBean userObjBean) {
+                        showToast("注册成功");
+                        finish();
+                    }
+                });
     }
 }

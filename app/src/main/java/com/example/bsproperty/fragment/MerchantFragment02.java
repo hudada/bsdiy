@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by wdxc1 on 2018/3/21.
  */
 
-public class UserFragment02 extends BaseFragment {
+public class MerchantFragment02 extends BaseFragment {
     @BindView(R.id.btn_back)
     Button btnBack;
     @BindView(R.id.tv_title)
@@ -47,7 +47,7 @@ public class UserFragment02 extends BaseFragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && mContext != null) {
             OkHttpTools.sendGet(mContext, ApiManager.ORDER_LIST)
-                    .addParams("type", "1")
+                    .addParams("type", "2")
                     .addParams("uid", MyApplication.getInstance().getUserBean().getId() + "")
                     .build()
                     .execute(new BaseCallBack<OrderListBean>(mContext, OrderListBean.class) {
@@ -63,7 +63,7 @@ public class UserFragment02 extends BaseFragment {
     @Override
     protected void loadData() {
         OkHttpTools.sendGet(mContext, ApiManager.ORDER_LIST)
-                .addParams("type", "1")
+                .addParams("type", "2")
                 .addParams("uid", MyApplication.getInstance().getUserBean().getId() + "")
                 .build()
                 .execute(new BaseCallBack<OrderListBean>(mContext, OrderListBean.class) {
@@ -101,7 +101,7 @@ public class UserFragment02 extends BaseFragment {
 
     @Override
     public int getRootViewId() {
-        return R.layout.fragment_user02;
+        return R.layout.fragment_merchant02;
     }
 
     private class MyAdapter extends BaseAdapter<OrderBean> {
@@ -112,10 +112,10 @@ public class UserFragment02 extends BaseFragment {
 
         @Override
         public void initItemView(BaseViewHolder holder, OrderBean orderBean, int position) {
-            holder.setText(R.id.tv_name, orderBean.getTitle());
+            holder.setText(R.id.tv_name, orderBean.getUname() + "用户的订单");
             holder.setText(R.id.tv_time, MyApplication.format.format(orderBean.getTime()));
-            holder.setText(R.id.tv_store, orderBean.getSname());
-            holder.setText(R.id.tv_addr, "地址：" + orderBean.getSaddr());
+            holder.getView(R.id.tv_store).setVisibility(View.GONE);
+            holder.getView(R.id.tv_addr).setVisibility(View.GONE);
             if (orderBean.getActPrice() > 0) {
                 holder.setText(R.id.tv_money, "总价：￥" + orderBean.getActPrice() + "元");
             } else {

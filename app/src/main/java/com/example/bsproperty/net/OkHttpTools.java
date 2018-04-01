@@ -75,8 +75,8 @@ public class OkHttpTools {
         if (context instanceof BaseActivity) {
             ((BaseActivity) context).showProgress(context);
         }
-        return OkHttpUtils.post()//
-                .addFile(key, file.getName(), file)//
+        return OkHttpUtils.post()
+                .addFile(key, file.getName(), file)
                 .url(url);
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/btn_ripple"
+        android:orientation="vertical">
+
+        <include layout="@layout/top_layout" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/the_space"
+            android:layout_marginTop="@dimen/the_space"
+            android:text="商品名：沃尔玛低脂蛋糕"
+            android:textColor="@color/text_4"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/tv_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="@dimen/the_space"
+            android:layout_marginTop="20dp"
+            android:text="店铺名：土拨鼠蛋糕店"
+            android:textColor="@color/text_6"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_addr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_store"
+            android:layout_marginLeft="@dimen/the_space"
+            android:layout_marginTop="@dimen/the_space"
+            android:text="地址：土拨鼠草原广场"
+            android:textColor="@color/text_6"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_diy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_store"
+            android:layout_marginLeft="@dimen/the_space"
+            android:layout_marginRight="@dimen/the_space"
+            android:layout_marginTop="@dimen/the_space"
+            android:text="DIY备注：奶油+草莓+慕斯蛋糕"
+            android:textColor="@color/text_6"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/the_space"
+            android:layout_marginTop="@dimen/the_space"
+            android:text="下单时间：2018-5-21 10:10:00"
+            android:textColor="@color/text_6"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_store"
+            android:layout_marginRight="@dimen/the_space"
+            android:layout_marginTop="30dp"
+            android:gravity="right"
+            android:text="总价：￥150元"
+            android:textColor="@color/text_4"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/the_space"
+        android:layout_marginTop="64dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/loading_bg" />
+</RelativeLayout>

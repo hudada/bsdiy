@@ -6,22 +6,22 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.bsproperty.R;
 import com.example.bsproperty.adapter.BaseAdapter;
-import com.example.bsproperty.bean.Merchant;
+import com.example.bsproperty.bean.ShopBean;
+import com.example.bsproperty.bean.ShopListBean;
+import com.example.bsproperty.net.ApiManager;
+import com.example.bsproperty.net.BaseCallBack;
+import com.example.bsproperty.net.OkHttpTools;
 import com.example.bsproperty.ui.MerchantDetailActivity;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by wdxc1 on 2018/3/21.
@@ -39,16 +39,31 @@ public class UserFragment01 extends BaseFragment {
     @BindView(R.id.sl_list)
     SwipeRefreshLayout slList;
 
-    private ArrayList<Merchant> mData;
+    private ArrayList<ShopBean> mData;
     private MyAdapter adapter;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadWebData();
+    }
+
+    private void loadWebData() {
+        mData.clear();
+        OkHttpTools.sendGet(mContext, ApiManager.SHOP_LIST)
+                .build()
+                .execute(new BaseCallBack<ShopListBean>(mContext, ShopListBean.class) {
+                    @Override
+                    public void onResponse(ShopListBean shopListBean) {
+                        mData = shopListBean.getData();
+                        adapter.notifyDataSetChanged(mData);
+                    }
+                });
+    }
 
     @Override
     protected void loadData() {
 
-        for (int i = 0; i < 10; i++) {
-            mData.add(new Merchant());
-        }
-        rvList.setAdapter(adapter);
     }
 
     @Override
@@ -57,13 +72,16 @@ public class UserFragment01 extends BaseFragment {
         btnBack.setVisibility(View.GONE);
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
         mData = new ArrayList<>();
-        adapter = new MyAdapter(mContext,R.layout.item_merchant,mData);
+        adapter = new MyAdapter(mContext, R.layout.item_merchant, mData);
         adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, Object item, int position) {
-                startActivity(new Intent(mContext, MerchantDetailActivity.class));
+                Intent intent = new Intent(mContext, MerchantDetailActivity.class);
+                intent.putExtra("data", mData.get(position));
+                startActivity(intent);
             }
         });
+        rvList.setAdapter(adapter);
         slList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -77,15 +95,19 @@ public class UserFragment01 extends BaseFragment {
         return R.layout.fragment_user01;
     }
 
-    private class MyAdapter extends BaseAdapter<Merchant>{
+    private class MyAdapter extends BaseAdapter<ShopBean> {
 
-        public MyAdapter(Context context, int layoutId, ArrayList<Merchant> data) {
+        public MyAdapter(Context context, int layoutId, ArrayList<ShopBean> data) {
             super(context, layoutId, data);
         }
 
         @Override
-        public void initItemView(BaseViewHolder holder, Merchant merchant, int position) {
-
+        public void initItemView(BaseViewHolder holder, ShopBean shopBean, int position) {
+            holder.setText(R.id.tv_name, shopBean.getName());
+            holder.setText(R.id.tv_total, "月售：" + shopBean.getSum());
+            holder.setText(R.id.tv_msg, shopBean.getInfo());
+            holder.setText(R.id.tv_addr, "地址：" + shopBean.getAddr());
+            holder.setText(R.id.tv_tel, "tel：" + shopBean.getTel());
         }
     }
 }

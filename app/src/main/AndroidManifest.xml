@@ -17,6 +17,12 @@
         <activity
             android:name=".ui.UserMainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MerchantMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AdminMainActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -39,7 +45,14 @@
         <activity android:name=".ui.LoginSelectActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.RgActivity" />
-        <activity android:name=".ui.MerchantDetailActivity"></activity>
+        <activity android:name=".ui.MerchantDetailActivity" />
+        <activity android:name=".ui.CommodityActivity" />
+        <activity android:name=".ui.DiyActivity" />
+        <activity android:name=".ui.OrderInfoActivity" />
+        <activity android:name=".ui.ShopOpenActivity" />
+        <activity android:name=".ui.AddProductActivity" />
+        <activity android:name=".ui.ModifyInfoActivity" />
+        <activity android:name=".ui.ApplyDetialActivity"></activity>
     </application>
 
 </manifest>

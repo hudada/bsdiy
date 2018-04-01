@@ -1,32 +1,46 @@
-package com.example.bsproperty.ui;
+package com.example.bsproperty.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.bsproperty.MyApplication;
 import com.example.bsproperty.R;
 import com.example.bsproperty.adapter.BaseAdapter;
 import com.example.bsproperty.bean.ProductBean;
 import com.example.bsproperty.bean.ShopBean;
-import com.example.bsproperty.fragment.MerchantFragment01;
+import com.example.bsproperty.bean.ShopObjBean;
 import com.example.bsproperty.net.ApiManager;
+import com.example.bsproperty.net.BaseCallBack;
+import com.example.bsproperty.net.OkHttpTools;
+import com.example.bsproperty.ui.AddProductActivity;
+import com.example.bsproperty.ui.CommodityActivity;
+import com.example.bsproperty.ui.ShopOpenActivity;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
-public class MerchantDetailActivity extends BaseActivity {
+/**
+ * Created by wdxc1 on 2018/3/21.
+ */
 
+public class MerchantFragment01 extends BaseFragment {
     @BindView(R.id.btn_back)
     Button btnBack;
     @BindView(R.id.tv_title)
@@ -35,49 +49,43 @@ public class MerchantDetailActivity extends BaseActivity {
     Button btnRight;
     @BindView(R.id.rv_list)
     RecyclerView rvList;
-    @BindView(R.id.sl_list)
-    SwipeRefreshLayout slList;
 
     private ArrayList<ProductBean> mdata = new ArrayList<>();
     private MyAdapter adapter;
     private ShopBean shopBean;
-    private int mPosition;
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
-        tvTitle.setText("店铺详情");
-        btnRight.setText("在线DIY");
-        btnRight.setVisibility(View.VISIBLE);
+    public void onResume() {
+        super.onResume();
+        loadWebData();
+    }
 
-        slList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                slList.setRefreshing(false);
-            }
-        });
-        shopBean = (ShopBean) getIntent().getSerializableExtra("data");
-        mdata = (ArrayList<ProductBean>) shopBean.getProductBeans();
-        adapter = new MyAdapter(mContext, R.layout.item_shop, mdata);
-        adapter.setmHeadView(R.layout.head_merchant_detail, new BaseAdapter.OnInitHead() {
-            @Override
-            public void onInitHeadData(View headView, Object o) {
-                initHeadView(headView);
-            }
-        });
-        adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, Object item, int position) {
-                mPosition = position;
-                Intent intent = new Intent(mContext, CommodityActivity.class);
-                intent.putExtra("sname", shopBean.getName());
-                intent.putExtra("saddr", shopBean.getAddr());
-                intent.putExtra("suid", shopBean.getUid());
-                intent.putExtra("data", mdata.get(position));
-                startActivityForResult(intent, 521);
-            }
-        });
-        rvList.setLayoutManager(new LinearLayoutManager(mContext));
-        rvList.setAdapter(adapter);
+    private void loadWebData() {
+        mdata.clear();
+        OkHttpTools.sendGet(mContext, ApiManager.SHOP_INFO + MyApplication.getInstance().getUserBean().getId())
+                .build()
+                .execute(new BaseCallBack<ShopObjBean>(mContext, ShopObjBean.class) {
+                    @Override
+                    public void onResponse(ShopObjBean shopObjBean) {
+                        if (shopObjBean.getData() == null) {
+                            btnRight.setVisibility(View.VISIBLE);
+                            btnRight.setText("开店");
+                        } else {
+                            shopBean = shopObjBean.getData();
+                            btnRight.setVisibility(View.VISIBLE);
+                            btnRight.setText("新增商品");
+                            adapter.setmHeadView(R.layout.head_merchant_detail, new BaseAdapter.OnInitHead() {
+                                @Override
+                                public void onInitHeadData(View headView, Object o) {
+                                    initHeadView(headView);
+                                }
+                            });
+                            mdata = (ArrayList<ProductBean>) shopObjBean.getData().getProductBeans();
+                        }
+
+                        adapter.notifyDataSetChanged(mdata);
+                    }
+                });
     }
 
     private void initHeadView(View headView) {
@@ -96,7 +104,7 @@ public class MerchantDetailActivity extends BaseActivity {
         headView.findViewById(R.id.rl_addr_click).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("详细地址")
                         .setMessage(shopBean.getAddr())
                         .setPositiveButton("确定", null)
@@ -106,28 +114,44 @@ public class MerchantDetailActivity extends BaseActivity {
     }
 
     @Override
-    protected int getRootViewId() {
-        return R.layout.activity_merchant_detail;
+    protected void loadData() {
+
     }
 
     @Override
-    protected void loadData() {
-    }
-
-
-    @OnClick({R.id.btn_back, R.id.btn_right})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_back:
-                finish();
-                break;
-            case R.id.btn_right:
-                Intent intent = new Intent(mContext, DiyActivity.class);
+    protected void initView(Bundle savedInstanceState) {
+        tvTitle.setText("店铺信息");
+        btnBack.setVisibility(View.GONE);
+        rvList.setLayoutManager(new LinearLayoutManager(mContext));
+        adapter = new MyAdapter(mContext, R.layout.item_shop, mdata);
+        adapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, Object item, int position) {
+                Intent intent = new Intent(mContext, CommodityActivity.class);
                 intent.putExtra("sname", shopBean.getName());
                 intent.putExtra("saddr", shopBean.getAddr());
                 intent.putExtra("suid", shopBean.getUid());
-                startActivity(intent);
-                break;
+                intent.putExtra("data", mdata.get(position));
+                startActivityForResult(intent, 521);
+            }
+        });
+        rvList.setAdapter(adapter);
+    }
+
+    @Override
+    public int getRootViewId() {
+        return R.layout.fragment_merchant01;
+    }
+
+
+    @OnClick(R.id.btn_right)
+    public void onViewClicked() {
+        if (btnRight.getText().toString().equals("开店")) {
+            startActivity(new Intent(mContext, ShopOpenActivity.class));
+        } else {
+            Intent intent = new Intent(mContext, AddProductActivity.class);
+            intent.putExtra("sid", shopBean.getId());
+            startActivity(intent);
         }
     }
 
@@ -153,16 +177,6 @@ public class MerchantDetailActivity extends BaseActivity {
                 holder.getView(R.id.tv_sale).setVisibility(View.GONE);
             }
             holder.setText(R.id.tv_total, "月售：" + productBean.getSum());
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            shopBean.setSum(shopBean.getSum() + 1);
-            mdata.get(mPosition).setSum(mdata.get(mPosition).getSum() + 1);
-            adapter.notifyDataSetChanged(mdata);
         }
     }
 }

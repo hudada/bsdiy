@@ -6,6 +6,7 @@ import com.example.bsproperty.bean.UserBean;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -18,8 +19,9 @@ public class MyApplication extends Application {
 
     private static MyApplication instance;
     private UserBean userBean;
+    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public static final int CURR_ADMIN = -1;
+    public static final int CURR_ADMIN = 0;
     public static final int CURR_USER = 1;
     public static final int CURR_MERCHANT = 2;
 

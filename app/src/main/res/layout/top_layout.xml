@@ -25,6 +25,7 @@
     <Button
         android:id="@+id/btn_right"
         android:layout_width="80dp"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@null"

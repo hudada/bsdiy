@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bsproperty.view.ProgressDialog;
@@ -77,20 +79,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         progressDialog.dismiss();
     }
 
-    public void jumpAct(Class toAct,Object... obj){
-        Intent intent = new Intent(mContext,toAct);
+    public void jumpAct(Class toAct, Object... obj) {
+        Intent intent = new Intent(mContext, toAct);
         for (int i = 0; i < obj.length; i++) {
             Object o = obj[i];
-            if (o instanceof Integer){
-                intent.putExtra(i+"", (Integer) o);
-            }else if (o instanceof String){
-                intent.putExtra(i+"", (String) o);
-            }else if (o instanceof Serializable){
-                intent.putExtra(i+"", (Serializable) o);
+            if (o instanceof Integer) {
+                intent.putExtra(i + "", (Integer) o);
+            } else if (o instanceof String) {
+                intent.putExtra(i + "", (String) o);
+            } else if (o instanceof Serializable) {
+                intent.putExtra(i + "", (Serializable) o);
             }
         }
         startActivity(intent);
     }
 
-
+    public boolean checkEditEmpty(EditText... editTexts) {
+        for (EditText editText : editTexts) {
+            String str = editText.getText().toString().trim();
+            if (TextUtils.isEmpty(str)) {
+                showToast(editText.getHint().toString());
+                return true;
+            }
+        }
+        return false;
+    }
 }

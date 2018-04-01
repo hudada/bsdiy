@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <include layout="@layout/top_layout" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:padding="10dp">
-
-        <ImageView
-            android:scaleType="centerCrop"
-            android:id="@+id/iv_img"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/iv_img"
             android:text="低脂蛋糕"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -45,28 +39,27 @@
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/iv_img"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/tv_sale"
             android:text="月售：109"
             android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="￥521"
                 android:textColor="@color/red"
-                android:layout_marginBottom="5dp"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_old_price"
@@ -76,12 +69,40 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_launcher" />
     </RelativeLayout>
 
-    <View
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="商品详情："
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_info"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/line" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1"
+        android:text="土拨鼠低脂蛋糕，使用澳大利亚奶粉和日本无菌鸡蛋特制而成。"
+        android:textSize="14sp" />
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue_bg"
+        android:text="确认预定"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 </LinearLayout>

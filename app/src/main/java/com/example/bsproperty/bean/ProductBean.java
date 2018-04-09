@@ -13,6 +13,7 @@ public class ProductBean implements Serializable {
     private double price;
     private String info;
     private Long sid;
+    private int isTop = 0;  //1=top;
 
     public Long getId() {
         return id;
@@ -86,4 +87,11 @@ public class ProductBean implements Serializable {
         this.sid = sid;
     }
 
+    public int getIsTop() {
+        return isTop;
+    }
+
+    public void setIsTop(int isTop) {
+        this.isTop = isTop;
+    }
 }

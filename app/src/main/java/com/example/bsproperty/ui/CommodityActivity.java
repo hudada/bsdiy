@@ -45,6 +45,8 @@ public class CommodityActivity extends BaseActivity {
     TextView tvInfo;
     @BindView(R.id.btn_ok)
     Button btnOk;
+    @BindView(R.id.tv_top)
+    TextView tvTop;
 
     private ProductBean productBean;
     private String sname;
@@ -56,7 +58,7 @@ public class CommodityActivity extends BaseActivity {
         if (MyApplication.getInstance().getUserBean().getRole() == MyApplication.CURR_USER) {
             btnOk.setVisibility(View.VISIBLE);
             btnRight.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnOk.setVisibility(View.GONE);
             btnRight.setVisibility(View.GONE);
         }
@@ -81,6 +83,11 @@ public class CommodityActivity extends BaseActivity {
             tvPrice.setText("￥" + productBean.getPrice());
             tvOldPrice.setVisibility(View.GONE);
             tvSale.setVisibility(View.GONE);
+        }
+        if (productBean.getIsTop() == 1) {
+            tvTop.setVisibility(View.VISIBLE);
+        } else {
+            tvTop.setVisibility(View.GONE);
         }
         tvTotal.setText("月售：" + productBean.getSum());
         tvInfo.setText(productBean.getInfo());

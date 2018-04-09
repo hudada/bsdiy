@@ -36,12 +36,27 @@
             android:textSize="11sp" />
 
         <TextView
+            android:id="@+id/tv_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tv_sale"
+            android:background="@color/red"
+            android:paddingBottom="1dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="1dp"
+            android:text="top"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
-            android:layout_toRightOf="@+id/tv_sale"
+            android:layout_toRightOf="@+id/tv_top"
             android:text="月售：109"
             android:textSize="14sp" />
 
@@ -73,8 +88,8 @@
             android:id="@+id/iv_img"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:scaleType="centerCrop"
             android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
     </RelativeLayout>
 

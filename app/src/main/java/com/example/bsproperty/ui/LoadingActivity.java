@@ -28,7 +28,7 @@ public class LoadingActivity extends BaseActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(mContext,LoginSelectActivity.class));
+                startActivity(new Intent(mContext,LoginActivity.class));
                 finish();
             }
         }).start();

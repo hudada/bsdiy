@@ -1,6 +1,7 @@
 package com.example.bsproperty.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.bsproperty.MyApplication;
 import com.example.bsproperty.R;
 import com.example.bsproperty.adapter.BaseAdapter;
+import com.example.bsproperty.bean.BaseResponse;
 import com.example.bsproperty.bean.ProductBean;
 import com.example.bsproperty.bean.ShopBean;
 import com.example.bsproperty.bean.ShopObjBean;
@@ -135,6 +137,57 @@ public class MerchantFragment01 extends BaseFragment {
                 startActivityForResult(intent, 521);
             }
         });
+        adapter.setOnItemLongClickListener(new BaseAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View v, Object item, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("选择操作")
+                        .setItems(new String[]{"推荐", "删除"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        OkHttpTools.sendPost(mContext, ApiManager.PRODUCT_TOP)
+                                                .addParams("id", mdata.get(position).getId() + "")
+                                                .addParams("sid", shopBean.getId() + "")
+                                                .build()
+                                                .execute(new BaseCallBack<BaseResponse>(mContext, BaseResponse.class) {
+                                                    @Override
+                                                    public void onResponse(BaseResponse baseResponse) {
+                                                        showToast("操作成功");
+                                                        loadWebData();
+                                                    }
+                                                });
+                                        break;
+                                    case 1:
+                                        AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+                                        builder1.setTitle("提示")
+                                                .setMessage("是否确定删除该商品？")
+                                                .setNegativeButton("取消", null)
+                                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        OkHttpTools.sendPost(mContext, ApiManager.PRODUCT_DEL)
+                                                                .addParams("id", mdata.get(position).getId() + "")
+                                                                .build()
+                                                                .execute(new BaseCallBack<BaseResponse>(mContext, BaseResponse.class) {
+                                                                    @Override
+                                                                    public void onResponse(BaseResponse baseResponse) {
+                                                                        showToast("删除成功");
+                                                                        mdata.remove(position);
+                                                                        adapter.notifyDataSetChanged(mdata);
+                                                                    }
+                                                                });
+                                                    }
+                                                }).show();
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+
+            }
+        });
         rvList.setAdapter(adapter);
     }
 
@@ -175,6 +228,11 @@ public class MerchantFragment01 extends BaseFragment {
                 holder.setText(R.id.tv_price, "￥" + productBean.getPrice());
                 holder.getView(R.id.tv_old_price).setVisibility(View.GONE);
                 holder.getView(R.id.tv_sale).setVisibility(View.GONE);
+            }
+            if (productBean.getIsTop() == 1) {
+                holder.getView(R.id.tv_top).setVisibility(View.VISIBLE);
+            } else {
+                holder.getView(R.id.tv_top).setVisibility(View.GONE);
             }
             holder.setText(R.id.tv_total, "月售：" + productBean.getSum());
         }

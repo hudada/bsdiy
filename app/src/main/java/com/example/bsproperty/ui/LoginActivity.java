@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.bsproperty.MyApplication;
@@ -33,12 +35,21 @@ public class LoginActivity extends BaseActivity {
     Button btn0;
     @BindView(R.id.btn_1)
     Button btn1;
+    @BindView(R.id.rg_list)
+    RadioGroup rgList;
 
     private int limit;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        limit = 1;
+        rgList.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                limit = Integer.parseInt(findViewById(checkedId).getTag().toString());
+            }
+        });
+        ((RadioButton)rgList.getChildAt(0)).setChecked(true);
     }
 
     @Override
@@ -48,18 +59,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
-        limit = getIntent().getIntExtra("limit", 0);
-
-        switch (limit) {
-            case MyApplication.CURR_ADMIN:
-                btn1.setVisibility(View.GONE);
-                break;
-            case MyApplication.CURR_USER:
-                break;
-            case MyApplication.CURR_MERCHANT:
-                break;
-
-        }
 
     }
 

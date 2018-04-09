@@ -152,6 +152,11 @@ public class MerchantDetailActivity extends BaseActivity {
                 holder.getView(R.id.tv_old_price).setVisibility(View.GONE);
                 holder.getView(R.id.tv_sale).setVisibility(View.GONE);
             }
+            if (productBean.getIsTop() == 1) {
+                holder.getView(R.id.tv_top).setVisibility(View.VISIBLE);
+            } else {
+                holder.getView(R.id.tv_top).setVisibility(View.GONE);
+            }
             holder.setText(R.id.tv_total, "月售：" + productBean.getSum());
         }
     }

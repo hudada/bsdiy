@@ -42,6 +42,21 @@
             android:textSize="11sp" />
 
         <TextView
+            android:id="@+id/tv_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tv_sale"
+            android:background="@color/red"
+            android:paddingBottom="1dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="1dp"
+            android:text="top"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

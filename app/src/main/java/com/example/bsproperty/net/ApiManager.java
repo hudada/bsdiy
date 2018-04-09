@@ -28,6 +28,8 @@ public class ApiManager {
     public static final String SHOP_ADD = HOST + API + SHOP + "/add";
 
     public static final String PRODUCT_ADD = HOST + API + PRODUCT + "/add";
+    public static final String PRODUCT_DEL = HOST + API + PRODUCT + "/delete";
+    public static final String PRODUCT_TOP = HOST + API + PRODUCT + "/top";
 
     public static final String ORDER_ADD = HOST + API + ORDER + "/add";
     public static final String ORDER_LIST = HOST + API + ORDER + "/list";

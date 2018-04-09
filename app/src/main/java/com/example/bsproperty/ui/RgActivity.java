@@ -2,8 +2,11 @@ package com.example.bsproperty.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.bsproperty.MyApplication;
@@ -27,12 +30,21 @@ public class RgActivity extends BaseActivity {
     EditText etPwd;
     @BindView(R.id.btn_0)
     Button btn0;
+    @BindView(R.id.rg_list)
+    RadioGroup rgList;
 
     private int limit;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        limit = 1;
+        rgList.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                limit = Integer.parseInt(findViewById(checkedId).getTag().toString());
+            }
+        });
+        ((RadioButton)rgList.getChildAt(0)).setChecked(true);
     }
 
     @Override
@@ -42,7 +54,6 @@ public class RgActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
-        limit = getIntent().getIntExtra("0", 0);
     }
 
 

@@ -33,6 +33,7 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
     private LayoutInflater mInflater;
     private OnLoadMoreListener onLoadMoreListener;
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private boolean isLoading;
     private boolean isFooter;
     private boolean isNoMore;
@@ -105,6 +106,19 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
                             }
                         });
                     }
+                    if (onItemLongClickListener != null) {
+                        ((BaseViewHolder) holder).rootView.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                if (hasHead) {
+                                    onItemLongClickListener.onItemLongClick(v, mData.get(position - 1), position - 1);
+                                } else {
+                                    onItemLongClickListener.onItemLongClick(v, mData.get(position), position);
+                                }
+                                return true;
+                            }
+                        });
+                    }
                     if (hasHead) {
                         initItemView((BaseViewHolder) holder, mData.get(position - 1), position - 1);
                     } else {
@@ -119,9 +133,9 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        if (mData.size()==0){
+        if (mData.size() == 0) {
             return 1;
-        }else{
+        } else {
             return mData.size() + (isFooter ? 1 : 0) + (hasHead ? 1 : 0);
         }
     }
@@ -146,6 +160,10 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
 
     public interface OnItemClickListener<T> {
         void onItemClick(View v, T item, int position);
+    }
+
+    public interface OnItemLongClickListener<T> {
+        void onItemLongClick(View v, T item, int position);
     }
 
     public interface OnInitHead<T> {
@@ -255,5 +273,13 @@ public abstract class BaseAdapter<T extends Object> extends RecyclerView.Adapter
     public void notifyDataSetChanged(ArrayList<T> data) {
         mData = data;
         notifyDataSetChanged();
+    }
+
+    public OnItemLongClickListener getOnItemLongClickListener() {
+        return onItemLongClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 }
